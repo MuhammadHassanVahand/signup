@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeScreen(),
+            builder: (context) => const HomeScreen(),
           ));
       isLogin = false;
       setState(() {});
@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                   width: 250,
                   height: 250,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                         image: NetworkImage(
                           "https://cdn.dribbble.com/users/1767962/screenshots/5986027/media/909e0b24e8f2b3fd12e409e0c1f622d6.gif",
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         fit: BoxFit.cover),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 FormBuilder(
@@ -124,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             print(formData);
                           }
                         },
-                        child: Text("Sign in"),
+                        child: const Text("Sign in"),
                       ),
                       const SizedBox(
                         height: 20,
@@ -134,10 +134,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => SignUp(),
+                                  builder: (context) => const SignUp(),
                                 ));
                           },
-                          child: Text("signUp")),
+                          child: const Text("signUp")),
                       const SizedBox(
                         height: 20,
                       ),

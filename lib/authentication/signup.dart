@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:signup/authentication/signin.dart';
 import 'package:signup/customWidget/customFormBilder.dart';
+import 'package:signup/screens/homescreen.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -15,6 +17,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passordController = TextEditingController();
@@ -22,7 +25,7 @@ class _SignUpState extends State<SignUp> {
   bool obscureText = true;
   bool isSignup = false;
 
-  signupAuth(
+  Future<void> signupAuth(
     emailAddress,
     password,
     formData,
@@ -34,21 +37,23 @@ class _SignUpState extends State<SignUp> {
     try {
       isSignup = true;
       setState(() {});
-      final credential =
+
+      final UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailAddress,
         password: password,
       );
-      users
-          .add({
-            'full name': name,
-            'email': emailAddress,
-            'date of birth': dateOfBirth,
-            'phone number': phoneNumber,
-            'gender': gender,
-          })
-          .then((value) => print("User Added"))
-          .catchError((error) => print("Failed to add user: $error"));
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user?.uid)
+          .set({
+        'full name': name,
+        'email': emailAddress,
+        'date of birth': dateOfBirth,
+        'phone number': phoneNumber,
+        'gender': gender,
+      });
+
       emailController.clear();
       passordController.clear();
       // ignore: use_build_context_synchronously
@@ -57,7 +62,13 @@ class _SignUpState extends State<SignUp> {
           content: Text("Sign up successfull"),
         ),
       );
-
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(),
+        ),
+      );
       isSignup = false;
       setState(() {});
       print(formData);
@@ -217,7 +228,7 @@ class _SignUpState extends State<SignUp> {
                               final phoneNumber = formData["phone number"];
                               final gender = formData["gender"];
                               final dateOfBirth = formData["date_of_birth"];
-                              signupAuth(
+                              await signupAuth(
                                 emailAddress,
                                 password,
                                 formData,

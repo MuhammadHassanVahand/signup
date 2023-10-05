@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:signup/authentication/signin.dart';
 import 'package:signup/firebase_options.dart';
+import 'package:signup/screens/homescreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
