@@ -27,8 +27,10 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       isLogin = true;
       setState(() {});
-      final credential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: emailAddress, password: password);
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailAddress,
+        password: password,
+      );
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -78,92 +80,103 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                FormBuilder(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      CustomBuilderText(
-                        controller: emailController,
-                        formTextName: "email",
-                        labelText: "Email Address",
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.email(),
-                          FormBuilderValidators.required(),
-                        ]),
+                Stack(
+                  children: [
+                    FormBuilder(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          CustomBuilderText(
+                            controller: emailController,
+                            formTextName: "email",
+                            labelText: "Email Address",
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.email(),
+                              FormBuilderValidators.required(),
+                            ]),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          CustomBuilderText(
+                            controller: passwordController,
+                            formTextName: "password",
+                            labelText: "Password",
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                obscureText = !obscureText;
+                                setState(() {});
+                              },
+                              icon: obscureText == true
+                                  ? const Icon(Icons.visibility_off)
+                                  : const Icon(Icons.visibility),
+                            ),
+                            obscureText: obscureText,
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(),
+                            ]),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          CustomButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.saveAndValidate()) {
+                                final formData = _formKey.currentState!.value;
+                                final emailAddress = formData["email"];
+                                final password = formData["password"];
+                                loginProccess(emailAddress, password);
+                                print(formData);
+                              }
+                            },
+                            buttonText: "Sign in",
+                            backgroundColor: Colors.cyan,
+                            textColor: Colors.white,
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            height: 50,
+                            fontWeight: FontWeight.bold,
+                            size: 20,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          CustomButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SignUp(),
+                                  ));
+                            },
+                            buttonText: "Sign Up",
+                            backgroundColor: Colors.white,
+                            textColor: Colors.cyan,
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            height: 50,
+                            fontWeight: FontWeight.bold,
+                            size: 20,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                        ],
                       ),
-                      const SizedBox(
-                        height: 20,
+                    ),
+                    Positioned.fill(
+                      top: 50,
+                      child: Column(
+                        children: [
+                          Visibility(
+                            visible: isLogin,
+                            child: const CircularProgressIndicator(),
+                          ),
+                        ],
                       ),
-                      CustomBuilderText(
-                        controller: passwordController,
-                        formTextName: "password",
-                        labelText: "Password",
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            obscureText = !obscureText;
-                            setState(() {});
-                          },
-                          icon: obscureText == true
-                              ? const Icon(Icons.visibility_off)
-                              : const Icon(Icons.visibility),
-                        ),
-                        obscureText: obscureText,
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(),
-                        ]),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CustomButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.saveAndValidate()) {
-                            final formData = _formKey.currentState!.value;
-                            final emailAddress = formData["email"];
-                            final password = formData["password"];
-                            loginProccess(emailAddress, password);
-                            print(formData);
-                          }
-                        },
-                        buttonText: "Sign in",
-                        backgroundColor: Colors.cyan,
-                        textColor: Colors.white,
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        height: 50,
-                        fontWeight: FontWeight.bold,
-                        size: 20,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CustomButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SignUp(),
-                              ));
-                        },
-                        buttonText: "Sign Up",
-                        backgroundColor: Colors.white,
-                        textColor: Colors.cyan,
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        height: 50,
-                        fontWeight: FontWeight.bold,
-                        size: 20,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Visibility(
-                        visible: isLogin,
-                        child: const CircularProgressIndicator(),
-                      )
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),
