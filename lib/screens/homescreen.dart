@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
         email = userData["email"] ?? "";
         phoneNumber = userData["phone number"] ?? "";
         gender = userData["gender"] ?? "";
-        dateOfBirth = userData["date of birth"] as Timestamp ?? Timestamp.now();
+        dateOfBirth = userData["date of birth"] as Timestamp;
       });
     }
   }

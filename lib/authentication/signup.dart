@@ -6,7 +6,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:signup/authentication/signin.dart';
+import 'package:signup/customWidget/appText.dart';
 import 'package:signup/customWidget/customFormBilder.dart';
+import 'package:signup/customWidget/cutomButton.dart';
 import 'package:signup/screens/homescreen.dart';
 
 class SignUp extends StatefulWidget {
@@ -103,9 +105,6 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Sign Up'),
-        ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
@@ -218,7 +217,7 @@ class _SignUpState extends State<SignUp> {
                         const SizedBox(height: 20),
                         GenderDropdown(),
                         const SizedBox(height: 20),
-                        ElevatedButton(
+                        CustomButton(
                           onPressed: () async {
                             if (_formKey.currentState!.saveAndValidate()) {
                               final formData = _formKey.currentState!.value;
@@ -238,14 +237,35 @@ class _SignUpState extends State<SignUp> {
                                 gender,
                               );
                             }
-
-                            const CircularProgressIndicator();
                           },
-                          child: Text('Sign Up'),
+                          buttonText: "Sign Up",
+                          backgroundColor: Colors.cyan,
+                          textColor: Colors.white,
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          height: 50,
+                          fontWeight: FontWeight.bold,
+                          size: 20,
                         ),
                         const SizedBox(
                           height: 5,
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            AppText(text: "Back to login screen"),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LoginScreen(),
+                                  ),
+                                );
+                              },
+                              child: Text("Login"),
+                            )
+                          ],
+                        )
                       ],
                     ),
                   ),

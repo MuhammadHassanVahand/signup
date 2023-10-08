@@ -6,6 +6,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:signup/authentication/signup.dart';
 import 'package:signup/customWidget/customFormBilder.dart';
+import 'package:signup/customWidget/cutomButton.dart';
 import 'package:signup/screens/homescreen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -114,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      ElevatedButton(
+                      CustomButton(
                         onPressed: () async {
                           if (_formKey.currentState!.saveAndValidate()) {
                             final formData = _formKey.currentState!.value;
@@ -124,20 +125,36 @@ class _LoginScreenState extends State<LoginScreen> {
                             print(formData);
                           }
                         },
-                        child: const Text("Sign in"),
+                        buttonText: "Sign in",
+                        backgroundColor: Colors.cyan,
+                        textColor: Colors.white,
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        height: 50,
+                        fontWeight: FontWeight.bold,
+                        size: 20,
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-                      ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const SignUp(),
-                                ));
-                          },
-                          child: const Text("signUp")),
+                      CustomButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SignUp(),
+                              ));
+                        },
+                        buttonText: "Sign Up",
+                        backgroundColor: Colors.white,
+                        textColor: Colors.cyan,
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        height: 50,
+                        fontWeight: FontWeight.bold,
+                        size: 20,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       const SizedBox(
                         height: 20,
                       ),
