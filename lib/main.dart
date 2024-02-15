@@ -1,17 +1,32 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:signup/authentication/signin.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signup/firebase_options.dart';
-import 'package:signup/screens/homescreen.dart';
+import 'package:signup/screens/api.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MyApp());
+  final prefs = await SharedPreferences.getInstance();
+  final savedEmail = prefs.getString("userEmail");
+  final isLoggedIn = FirebaseAuth.instance.currentUser != null;
+  runApp(MyApp(
+    prefs: prefs,
+    savedEmail: savedEmail,
+    isLoggedIn: isLoggedIn,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final SharedPreferences prefs;
+  final String? savedEmail;
+  final bool isLoggedIn;
+  const MyApp(
+      {super.key,
+      required this.prefs,
+      this.savedEmail,
+      required this.isLoggedIn});
 
   // This widget is the root of your application.
   @override
@@ -37,7 +52,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const LoginScreen(),
+      // home: isLoggedIn ? HomeScreen() : LoginScreen(savedEmail: savedEmail),
+      home: API(),
     );
   }
 }

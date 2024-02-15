@@ -1,16 +1,19 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signup/authentication/signup.dart';
 import 'package:signup/customWidget/customFormBilder.dart';
 import 'package:signup/customWidget/cutomButton.dart';
 import 'package:signup/screens/homescreen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final String? savedEmail;
+  const LoginScreen({super.key, this.savedEmail});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -31,6 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
         email: emailAddress,
         password: password,
       );
+      storeUserEmailInSharedPreferences(emailAddress);
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -55,6 +59,19 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.savedEmail != null) {
+      emailController.text = widget.savedEmail!;
+    }
+  }
+
+  Future<void> storeUserEmailInSharedPreferences(String email) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('userEmail', email);
   }
 
   @override

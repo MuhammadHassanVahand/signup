@@ -104,8 +104,8 @@ class CustomBuilderDateOfBirth extends StatelessWidget {
     return FormBuilderDateTimePicker(
       name: formFieldName,
       initialValue: initialValue,
-      inputType: InputType.date, // Set the input type to date
-      format: DateFormat('yyyy-MM-dd'), // Specify the date format
+      inputType: InputType.date,
+      format: DateFormat('yyyy-MM-dd'),
       decoration: InputDecoration(
         suffixIcon: suffixIcon,
         labelText: labelText,

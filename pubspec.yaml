@@ -41,6 +41,8 @@ dependencies:
   form_builder_validators: ^9.1.0
   cloud_firestore: ^4.9.3
   intl: ^0.18.1
+  shared_preferences: ^2.2.2
+  http: ^1.1.0
 
 dev_dependencies:
   flutter_test:

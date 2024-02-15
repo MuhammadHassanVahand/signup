@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signup/authentication/signin.dart';
 import 'package:signup/customWidget/appText.dart';
 
@@ -38,6 +39,11 @@ class _HomeScreenState extends State<HomeScreen> {
         dateOfBirth = userData["date of birth"] as Timestamp;
       });
     }
+  }
+
+  Future<void> signOut() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
   }
 
   @override
@@ -119,6 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ListTile(
                 onTap: () async {
                   FirebaseAuth.instance.signOut();
+                  signOut();
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
